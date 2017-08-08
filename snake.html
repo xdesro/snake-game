@@ -1,0 +1,88 @@
+<html>
+<head></head>
+<body>
+  <canvas id='field' height='400' width='400'></canvas>
+  <script>
+    window.onload=function() {
+      canvas=document.getElementById("field");
+      ctx=canvas.getContext("2d");
+      document.addEventListener("keydown",keyPush);
+      setInterval(game,1000/15);
+    }
+
+    playerX=playerY=10;
+    gridSize=tileCount=20;
+    appleX=appleY=15;
+    xVel=yVel=0;
+    trail=[];
+    tail=5;
+
+    game = () => {
+      playerX += xVel;
+      playerY += yVel;
+
+      if ( playerX < 0 ) {
+        playerX = tileCount-1;
+      }
+      if ( playerX > tileCount-1 ) {
+        playerX = 0;
+      }
+      if ( playerY < 0 ) {
+        playerY = tileCount-1;
+      }
+      if ( playerY > tileCount-1 ) {
+        playerY=0;
+      }
+
+      // BG
+      ctx.fillStyle='#000';
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+
+      // Snake
+      ctx.fillStyle='lime';
+      for(let i=0; i<trail.length; i++) {
+        ctx.fillRect(trail[i].x*gridSize, trail[i].y*gridSize, gridSize-2, gridSize-2)
+        if(trail[i].x==playerX && trail[i].y==playerY) {
+          tail = 5;
+        }
+      }
+
+      trail.push({x:playerX,y:playerY});
+
+      while(trail.length>tail) {
+        trail.shift();
+      }
+
+      if(appleX==playerX && appleY==playerY) {
+        tail++;
+        appleX = Math.floor((Math.random() * tileCount));
+        appleY = Math.floor((Math.random() * tileCount));
+      } 
+
+      // Apple
+      ctx.fillStyle='red';
+      ctx.fillRect(appleX*gridSize, appleY*gridSize, gridSize-2, gridSize-2);
+    }
+    keyPush = (e) => {
+      switch(e.keyCode) {
+        case 37:
+          xVel = -1;
+          yVel = 0;
+          break;
+        case 38:
+          xVel = 0;
+          yVel = -1;
+          break;
+        case 39:
+          xVel = 1;
+          yVel = 0;
+          break;
+        case 40:
+          xVel = 0;
+          yVel = 1;
+          break;
+      }
+    }
+  </script>
+</body>
+</html>
