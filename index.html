@@ -1,7 +1,32 @@
 <html>
-<head></head>
+<head>
+  <title>A Javascript Snake Game for Kicks</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+</head>
 <body>
-  <canvas id='field' height='400' width='400'></canvas>
+  <nav>
+    <div class="container">
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo">Snek</a>
+      <ul id="nav-mobile" class="right">
+        <li><a href="https://henry.codes">Portfolio</li>
+        <li><a href="https://github.com/xdesro">Github</a></li>
+      </ul>
+    </div>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="row">
+      <p>This is a simple Snake game inspired by a speed-coding YouTube video. The game is built with HTML5 <code>canvas</code> and JavaScript. The code is terrible, non-compliant, and doesn't work on mobile, but this was mostly just for fun, to see how fast I could do it!</p>
+      <p>16 minutes, by the way.</p>
+      <p><em>Keyboard arrow keys start the game!</em></p>
+    </div>
+    <div class="row">
+      <div class="col s12">
+        <canvas id='field' height='400' width='400' style="margin: 1em auto; display:block;"></canvas>
+      </div>
+    </div>
+  </div>
   <script>
     window.onload=function() {
       canvas=document.getElementById("field");
@@ -9,14 +34,12 @@
       document.addEventListener("keydown",keyPush);
       setInterval(game,1000/15);
     }
-
     playerX=playerY=10;
     gridSize=tileCount=20;
     appleX=appleY=15;
     xVel=yVel=0;
     trail=[];
     tail=5;
-
     game = () => {
       playerX += xVel;
       playerY += yVel;
@@ -33,34 +56,25 @@
       if ( playerY > tileCount-1 ) {
         playerY=0;
       }
-
-      // BG
-      ctx.fillStyle='#000';
+      ctx.fillStyle='#000'; // BG
       ctx.fillRect(0,0,canvas.width,canvas.height);
-
-      // Snake
-      ctx.fillStyle='lime';
+      ctx.fillStyle='lime'; // Snake
       for(let i=0; i<trail.length; i++) {
         ctx.fillRect(trail[i].x*gridSize, trail[i].y*gridSize, gridSize-2, gridSize-2)
         if(trail[i].x==playerX && trail[i].y==playerY) {
           tail = 5;
         }
       }
-
       trail.push({x:playerX,y:playerY});
-
       while(trail.length>tail) {
         trail.shift();
       }
-
       if(appleX==playerX && appleY==playerY) {
         tail++;
         appleX = Math.floor((Math.random() * tileCount));
         appleY = Math.floor((Math.random() * tileCount));
       } 
-
-      // Apple
-      ctx.fillStyle='red';
+      ctx.fillStyle='red'; //Apple
       ctx.fillRect(appleX*gridSize, appleY*gridSize, gridSize-2, gridSize-2);
     }
     keyPush = (e) => {
@@ -84,5 +98,6 @@
       }
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 </body>
 </html>
